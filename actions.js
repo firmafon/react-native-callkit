@@ -46,7 +46,7 @@ didActivateAudioSession = handler => (
 didDisplayIncomingCall = handler => (
     _RNCallKitEmitter.addListener(
         RNCallKitDidDisplayIncomingCall,
-        (data) => { handler(data.error); }
+        (data) => { handler(data.error, data.callUUID); }
     )
 )
 

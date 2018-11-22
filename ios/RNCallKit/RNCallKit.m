@@ -133,12 +133,16 @@ RCT_EXPORT_METHOD(displayIncomingCall:(NSString *)uuidString
     callUpdate.localizedCallerName = localizedCallerName;
 
     [self.callKitProvider reportNewIncomingCallWithUUID:uuid update:callUpdate completion:^(NSError * _Nullable error) {
-        [self sendEventWithName:RNCallKitDidDisplayIncomingCall body:@{ @"error": error ? error.localizedDescription : @"", @"uuid": uuid }];
-        if (error == nil) {
-            // Workaround per https://forums.developer.apple.com/message/169511
-            if ([self lessThanIos10_2]) {
-                [self configureAudioSession];
-            }
+        NSObject *body = @{
+            @"callUUID": uuidString,
+            @"error": error ? error.localizedDescription : @"",
+        };
+
+        [self sendEventWithName:RNCallKitDidDisplayIncomingCall body:body];
+
+        // Workaround per https://forums.developer.apple.com/message/169511
+        if (error == nil && [self lessThanIos10_2]) {
+            [self configureAudioSession];
         }
     }];
 }
