@@ -37,7 +37,7 @@ export default class RNCallKit {
         if (typeof options.appName !== 'string') {
             throw new Error('RNCallKit.setup: option "appName" should be of type "string"');
         }
-        _RNCallKit.setup(options);
+        return _RNCallKit.setup(options);
     }
 
     static displayIncomingCall(uuid, handle, handleType = 'number', hasVideo = false, localizedCallerName?: String) {
