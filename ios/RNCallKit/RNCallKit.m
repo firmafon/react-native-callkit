@@ -361,7 +361,7 @@ RCT_EXPORT_METHOD(setMutedCall:(NSString *)uuidString muted:(BOOL)muted resolver
     providerConfiguration.supportedHandleTypes = [NSSet setWithObjects:[NSNumber numberWithInteger:CXHandleTypePhoneNumber], [NSNumber numberWithInteger:CXHandleTypeEmailAddress], [NSNumber numberWithInteger:CXHandleTypeGeneric], nil];
 
     if (_settings[@"supportsVideo"]) {
-        providerConfiguration.supportsVideo = _settings["@supportsVideo"];
+        providerConfiguration.supportsVideo = _settings[@"supportsVideo"];
     }
 
     if (_settings[@"includesCallsInRecents"]) {
