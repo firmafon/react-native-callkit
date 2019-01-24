@@ -12,6 +12,11 @@ const _RNCallKit = NativeModules.RNCallKit;
 const _callkitEventHandlers = new Map();
 
 export default class RNCallKit {
+    static CXCallEndedReasonFailed = _RNCallKit.CXCallEndedReasonFailed
+    static CXCallEndedReasonRemoteEnded = _RNCallKit.CXCallEndedReasonRemoteEnded
+    static CXCallEndedReasonUnanswered = _RNCallKit.CXCallEndedReasonUnanswered
+    static CXCallEndedReasonAnsweredElsewhere = _RNCallKit.CXCallEndedReasonAnsweredElsewhere
+    static CXCallEndedReasonDeclinedElsewhere = _RNCallKit.CXCallEndedReasonDeclinedElsewhere
 
     static addEventListener(type, handler) {
         if (Platform.OS !== 'ios') return;
@@ -53,6 +58,11 @@ export default class RNCallKit {
     static reportConnectedOutgoingCallWithUUID(uuid) {
         if (Platform.OS !== 'ios') return;
         _RNCallKit.reportConnectedOutgoingCallWithUUID(uuid);
+    }
+
+    static reportEndedCallWithUUID(uuid, reason) {
+        if (Platform.OS !== 'ios') return;
+        _RNCallKit.reportEndedCallWithUUID(uuid, reason);
     }
 
     static endCall(uuid) {
