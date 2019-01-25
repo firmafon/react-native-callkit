@@ -271,7 +271,7 @@ RCT_EXPORT_METHOD(reportConnectedOutgoingCallWithUUID:(NSString *)uuidString)
 RCT_EXPORT_METHOD(reportEndedCallWithUUID:(NSString *)uuidString reason:(CXCallEndedReason)reason)
 {
     NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:uuidString];
-    [self.callKitProvider reportCallWithUUID:uuid endedAtDate:[NSDate date] reason:CXCallEndedReasonFailed];
+    [self.callKitProvider reportCallWithUUID:uuid endedAtDate:[NSDate date] reason:reason];
 }
 
 RCT_EXPORT_METHOD(setMutedCall:(NSString *)uuidString muted:(BOOL)muted resolver:(RCTPromiseResolveBlock) resolve rejecter: (RCTPromiseRejectBlock) reject)
