@@ -25,6 +25,7 @@ static NSString *const RNCallKitDidActivateAudioSession = @"RNCallKitDidActivate
 static NSString *const RNCallKitDidDeactivateAudioSession = @"RNCallKitDidDeactivateAudioSession";
 static NSString *const RNCallKitDidDisplayIncomingCall = @"RNCallKitDidDisplayIncomingCall";
 static NSString *const RNCallKitDidPerformSetMutedCallAction = @"RNCallKitDidPerformSetMutedCallAction";
+static NSString *const RNCallKitPerformPlayDTMFCallAction = @"RNCallKitPerformPlayDTMFCallAction";
 
 @implementation RCTConvert (CallEndedReason)
   RCT_ENUM_CONVERTER(CXCallEndedReason, (@{
@@ -96,7 +97,8 @@ RCT_EXPORT_MODULE()
              RNCallKitDidActivateAudioSession,
              RNCallKitDidDeactivateAudioSession,
              RNCallKitDidDisplayIncomingCall,
-             RNCallKitDidPerformSetMutedCallAction
+             RNCallKitDidPerformSetMutedCallAction,
+             RNCallKitPerformPlayDTMFCallAction
              ];
 }
 
@@ -561,6 +563,15 @@ continueUserActivity:(NSUserActivity *)userActivity
 #endif
 }
 
+- (void)provider:(CXProvider *)provider performPlayDTMFCallAction:(CXPlayDTMFCallAction *)action {
+#ifdef DEBUG
+    NSLog(@"[RNCallKit][CXProviderDelegate][provider:performPlayDTMFCallAction]");
+#endif
+    NSString *callUUID = [self containsLowerCaseLetter:action.callUUID.UUIDString] ? action.callUUID.UUIDString : [action.callUUID.UUIDString lowercaseString];
+    [self sendEventWithName:RNCallKitPerformPlayDTMFCallAction body:@{ @"digits": action.digits, @"callUUID": callUUID }];
+    [action fulfill];
+}
+
 - (void)provider:(CXProvider *)provider timedOutPerformingAction:(CXAction *)action
 {
 #ifdef DEBUG
@@ -589,7 +600,8 @@ continueUserActivity:(NSUserActivity *)userActivity
 #ifdef DEBUG
     NSLog(@"[RNCallKit][CXProviderDelegate][provider:performSetMutedCallAction]");
 #endif
-    [self sendEventWithName:RNCallKitDidPerformSetMutedCallAction body:@{ @"muted": @(action.muted) }];
+    NSString *callUUID = [self containsLowerCaseLetter:action.callUUID.UUIDString] ? action.callUUID.UUIDString : [action.callUUID.UUIDString lowercaseString];
+    [self sendEventWithName:RNCallKitDidPerformSetMutedCallAction body:@{ @"muted": @(action.muted), @"callUUID": callUUID }];
     [action fulfill];
 }
 
