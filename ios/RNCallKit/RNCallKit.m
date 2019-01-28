@@ -26,6 +26,16 @@ static NSString *const RNCallKitDidDeactivateAudioSession = @"RNCallKitDidDeacti
 static NSString *const RNCallKitDidDisplayIncomingCall = @"RNCallKitDidDisplayIncomingCall";
 static NSString *const RNCallKitDidPerformSetMutedCallAction = @"RNCallKitDidPerformSetMutedCallAction";
 
+@implementation RCTConvert (CallEndedReason)
+  RCT_ENUM_CONVERTER(CXCallEndedReason, (@{
+    @"CXCallEndedReasonFailed": @(CXCallEndedReasonFailed),
+    @"CXCallEndedReasonRemoteEnded": @(CXCallEndedReasonRemoteEnded),
+    @"CXCallEndedReasonUnanswered": @(CXCallEndedReasonUnanswered),
+    @"CXCallEndedReasonAnsweredElsewhere": @(CXCallEndedReasonAnsweredElsewhere),
+    @"CXCallEndedReasonDeclinedElsewhere": @(CXCallEndedReasonDeclinedElsewhere),
+  }), CXCallEndedReasonFailed, integerValue);
+@end
+
 @implementation RNCallKit
 {
     NSMutableDictionary *_settings;
@@ -35,6 +45,17 @@ static NSString *const RNCallKitDidPerformSetMutedCallAction = @"RNCallKitDidPer
 
 // should initialise in AppDelegate.m
 RCT_EXPORT_MODULE()
+
+- (NSDictionary *)constantsToExport
+{
+  return @{
+    @"CXCallEndedReasonFailed": @(CXCallEndedReasonFailed),
+    @"CXCallEndedReasonRemoteEnded": @(CXCallEndedReasonRemoteEnded),
+    @"CXCallEndedReasonUnanswered": @(CXCallEndedReasonUnanswered),
+    @"CXCallEndedReasonAnsweredElsewhere": @(CXCallEndedReasonAnsweredElsewhere),
+    @"CXCallEndedReasonDeclinedElsewhere": @(CXCallEndedReasonDeclinedElsewhere),
+  };
+};
 
 - (instancetype)init
 {
@@ -269,6 +290,12 @@ RCT_EXPORT_METHOD(reportConnectedOutgoingCallWithUUID:(NSString *)uuidString)
 {
     NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:uuidString];
     [self.callKitProvider reportOutgoingCallWithUUID:uuid connectedAtDate:[NSDate date]];
+}
+
+RCT_EXPORT_METHOD(reportEndedCallWithUUID:(NSString *)uuidString reason:(CXCallEndedReason)reason)
+{
+    NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:uuidString];
+    [self.callKitProvider reportCallWithUUID:uuid endedAtDate:[NSDate date] reason:reason];
 }
 
 RCT_EXPORT_METHOD(setMutedCall:(NSString *)uuidString muted:(BOOL)muted resolver:(RCTPromiseResolveBlock) resolve rejecter: (RCTPromiseRejectBlock) reject)
