@@ -183,13 +183,6 @@ RCT_EXPORT_METHOD(displayIncomingCall:(NSString *)uuidString
     callUpdate.localizedCallerName = localizedCallerName;
 
     [self.callKitProvider reportNewIncomingCallWithUUID:uuid update:callUpdate completion:^(NSError * _Nullable error) {
-        NSDictionary *body = @{
-            @"callUUID": uuidString,
-            @"error": error ? error.localizedDescription : @"",
-        };
-
-        [self sendEventWithName:RNCallKitDidDisplayIncomingCall body:body];
-
         if (error == nil) {
             resolve(@TRUE);
         } else {
