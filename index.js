@@ -47,12 +47,12 @@ export default class RNCallKit {
 
     static displayIncomingCall(uuid, handle, handleType = 'number', hasVideo = false, localizedCallerName?: String) {
         if (Platform.OS !== 'ios') return;
-        _RNCallKit.displayIncomingCall(uuid, handle, handleType, hasVideo, localizedCallerName);
+        return _RNCallKit.displayIncomingCall(uuid, handle, handleType, hasVideo, localizedCallerName);
     }
 
     static updateIncomingCall(uuid, handle, handleType = 'number', hasVideo = false, localizedCallerName?: String) {
         if (Platform.OS !== 'ios') return;
-        _RNCallKit.updateIncomingCall(uuid, handle, handleType, hasVideo, localizedCallerName);
+        return _RNCallKit.updateIncomingCall(uuid, handle, handleType, hasVideo, localizedCallerName);
     }
 
     static startCall(uuid, handle, handleType = 'number', hasVideo = false, contactIdentifier?: String) {
@@ -72,17 +72,17 @@ export default class RNCallKit {
 
     static endCall(uuid) {
         if (Platform.OS !== 'ios') return;
-        _RNCallKit.endCall(uuid);
+        return _RNCallKit.endCall(uuid);
     }
 
     static endAllCalls() {
         if (Platform.OS !== 'ios') return;
-        _RNCallKit.endAllCalls();
+        return _RNCallKit.endAllCalls();
     }
 
     static setMutedCAll(uuid, muted) {
         if (Platform.OS !== 'ios') return;
-        _RNCallKit.setMutedCall(uuid, muted);
+        return _RNCallKit.setMutedCall(uuid, muted);
     }
 
     static checkIfBusy() {
